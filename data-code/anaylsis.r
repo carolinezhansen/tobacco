@@ -81,4 +81,4 @@ ggplot() +
   scale_color_manual(values = c("red", "blue"), labels = c("High Price Increase", "Low Price Increase")) +
   theme_minimal()
 
-# Problem 6
+# problem 6
