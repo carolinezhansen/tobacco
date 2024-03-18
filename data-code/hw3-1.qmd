@@ -1,0 +1,55 @@
+---
+title: "Submission1-HW3"
+subtitle: "Research Methods, Spring 2024"
+author: "Caroline Hansen"
+format:
+  pdf:
+    output-file: "carolinehw3-1"
+    output-ext:  "pdf"
+    header-includes:
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+---
+
+https://github.com/carolinezhansen/tobacco/tree/main
+
+```{r}
+#| include: false
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra)
+
+```{r}
+
+#| include: false
+#| eval: true
+
+load("submission-1/Hwk3_workspace.Rdata")
+```
+
+
+
+# Answers for Homework 3: Submission 1
+\newpage
+
+# Problem 1 
+\noindent 1. Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
+```{r} 
+#| echo: false
+#| label: bar
+#| fig-cap: "Proportion of States with a Tax Change per Year"
+
+graph1
+```
+\newpage
+# Problem 2 
+\noindent 2. Plot on a single graph the average tax (in 2012 dollars) on cigarettes and the average price of a pack of cigarettes from 1970 to 2018.
+```{r} 
+#| echo: false
+#| label: graph2
+#| fig-cap: "Average Tax and Average Price of Cigarettes from 1970 to 2018"
+
+graph2
+```
