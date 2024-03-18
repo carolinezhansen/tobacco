@@ -1,18 +1,18 @@
 # submission 1 analysis
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, dplyr,tidyr, AER, fixest)
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, dplyr,tidyr, AER)
 
 source("data/output/TaxBurden_Data.rds")
 
-final.data$index
+final.data
 # problem 1
 # Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
 calculate_tax_change <- function(final.data) {
   tax_change <- c(NA, diff(final.data$tax_state)) # nolint
   return(final.data)
 }
-tax_change
+
 final.data1 <- calculate_tax_change(final.data)
 filtered_data1 <- final.data1[final.data1$Year >= 1969 & final.data$Year <= 2015, ]# nolint1
 tax_change
@@ -29,19 +29,14 @@ graph1 <- barplot(tax_changes_by_year$tax_change,
 
 
 # problem 2
-
 # Plot on a single graph the average tax (in 2012 dollars) on cigarettes and the average price of a pack of cigarettes from 1970 to 2018.
-total_tax_cpi_2012 <- final.data$tax_dollar*(cpi.2012/final.data$index)
-price_cpi_2012 <- final.data$cost_per_pack*(cpi.2012/final.data$index)
-average_tax1 <- final.data %>%
+average_tax <- final.data %>%
   group_by(Year) %>%
   summarize(avg_tax = mean(total_tax_cpi_2012, na.rm = TRUE))
-average_tax1
-average_price1 <- final.data %>%
+
+average_price <- final.data %>%
   group_by(Year) %>%
   summarize(avg_price = mean(price_cpi_2012, na.rm = TRUE))
-
-average_price
 
 # Merge the two datasets based on the "Year" column
 merged_data <- merge(average_tax, average_price, by = "Year", all = TRUE)
@@ -55,7 +50,7 @@ graph2 <- ggplot(merged_data, aes(x = Year)) +
        color = "Legend") +
   scale_color_manual(values = c("Average Tax" = "blue", "Average Price" = "red")) +
   theme_minimal()
-graph2
+
 # problem 3
 # Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
 # Step 1: Calculate the increase in cigarette prices for each state over the time period
@@ -117,7 +112,7 @@ print(reg1)
 # problem 7
 # Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
 
-iv_model <-feols(log(sales_per_capita) ~ log(cost_per_pack) | log(tax_dollar), data = filtered_data3)
+iv_model <- ivreg(log(sales_per_capita) ~ log(cost_per_pack) | log(tax_dollar), data = filtered_data3)
 
 summary(iv_model)
 

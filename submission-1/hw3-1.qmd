@@ -20,13 +20,13 @@ pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, 
                scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
                ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
                kableExtra)
+```
 
 ```{r}
-
 #| include: false
 #| eval: true
 
-load("submission-1/Hwk3_workspace.Rdata")
+load("Hwk3_workspace.Rdata")
 ```
 
 
