@@ -53,3 +53,14 @@ graph1
 
 graph2
 ```
+
+\newpage
+# Problem 3
+```{r}
+#| echo: false
+#| label: bar
+#| fig-cap: "Proportion of States with a Tax Change per Year"
+
+graph1
+```
+

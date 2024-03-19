@@ -5,7 +5,7 @@ pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table
 
 source("data/output/TaxBurden_Data.rds")
 
-final.data$index
+final.data$Year
 # problem 1
 # Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
 calculate_tax_change <- function(final.data) {
@@ -14,14 +14,14 @@ calculate_tax_change <- function(final.data) {
 }
 tax_change
 final.data1 <- calculate_tax_change(final.data)
-filtered_data1 <- final.data1[final.data1$Year >= 1969 & final.data$Year <= 2015, ]# nolint1
-tax_change
+filtered.data1 <- final.data1[final.data1$Year >= 1970 & final.data1$Year <= 1985,]# nolint1
+filtered.data1
 # Aggregate tax changes by year
-tax_changes_by_year <- aggregate(tax_change ~ Year, data = final.data1, FUN = mean, na.rm = TRUE)
+tax_changes_by_year <- aggregate(tax_change ~ Year, data = filtered.data1, FUN = mean, na.rm = TRUE)
 
 # Create a bar plot of tax changes over years
 graph1 <- barplot(tax_changes_by_year$tax_change, 
-        names.arg = tax_changes_by_year$year, 
+        names.arg = tax_changes_by_year$Year, 
         col = "skyblue", 
         main = "Average Tax Change by Year",
         xlab = "Year",
@@ -68,7 +68,7 @@ top_5_states <- head(price_increase[order(-price_increase$price), ], 5)$state
 
 filtered_data <- final.data[final.data$state %in% top_5_states, ]
 
-ggplot(filtered_data, aes(x = Year, y = sales_per_capita, group = state, color = state)) +
+graph3 <- ggplot(filtered_data, aes(x = Year, y = sales_per_capita, group = state, color = state)) +
   geom_line() +
   labs(x = "Year", y = "Average Packs Sold per Capita", 
        title = "Average Packs Sold per Capita for Top 5 States with Highest Price Increases",
@@ -105,6 +105,13 @@ print(compareincreases)
 # Focusing only on the time period from 1970 to 1990, regress log sales on log prices to estimate the price elasticity of demand over that period. Interpret your results.
 
 filtered_data3 <- final.data[final.data$Year >= 1970 & final.data$Year <= 1990, ]
+final.data <- final.data %>% mutate(ln_sales=log(sales_per_capita),
+                                ln_price_cpi=log(price_cpi),
+                                ln_price=log(cost_per_pack),
+                                tax_cpi=tax_state*(218/index),
+                                total_tax_cpi=tax_dollar*(218/index),
+                                ln_total_tax=log(total_tax_cpi),                             
+                                ln_state_tax=log(tax_cpi))
 
 model <- lm(log(sales_per_capita) ~ log(cost_per_pack), data = filtered_data3)
 

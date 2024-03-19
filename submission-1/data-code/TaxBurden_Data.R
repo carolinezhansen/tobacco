@@ -47,14 +47,23 @@ cpi.data <- pivot_longer(cpi.data,
 cpi.data <- cpi.data %>%
   group_by(Year) %>%
   summarize(index=mean(index, na.rm=TRUE))
-
+cpi.2012 <- cpi.data %>%
+  filter(Year==2012) %>%
+  select(index) %>% as.numeric()
+cpi.2012
+# Form final dataset ------------------------------------------------------
+ 
+# adjust to 2012 dollars
+final.data <- final.data %>%
+  mutate(cpi_2012=cpi.2012) %>%
+  left_join(cpi.data, by="Year")
 
 
 # Form final dataset ------------------------------------------------------
 # adjust to 2010 dollars
 final.data <- final.data %>%
   left_join(cpi.data, by="Year") %>%
-  mutate(price_cpi=cost_per_pack*(218/index))
+  mutate(price_cpi=cost_per_pack*(218/final.data$index))
 
 write_tsv(final.data,"data/output/TaxBurden_Data.txt",append=FALSE,col_names=TRUE)
 write_rds(final.data,"data/output/TaxBurden_Data.rds")
