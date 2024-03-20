@@ -86,3 +86,86 @@ graph4
 
 compareincreases
 ```
+
+\newpage
+# Problem 6
+\noindent 6.# Focusing only on the time period from 1970 to 1990, regress log sales on log prices to estimate the price elasticity of demand over that period. Interpret your results.
+```{r}
+#| echo: false
+#| label: problem6
+#| fig-cap: "Regression of Log Sales on Log Prices: 1970-1990"
+
+ols1
+```
+
+\newpage
+# Problem 7
+\noindent 7.# Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
+
+```{r}
+#| echo: false
+#| label: problem7
+#| fig-cap: "IV of Log Sales on Log Prices: 1970-1990"
+
+iv1
+```
+
+\newpage
+
+# Problem 8
+\noindent 8.# Show the first stage and reduced-form results from the instrument.
+
+
+```{r}
+#| echo: false
+#| label: problem81
+#| fig-cap: "First Stage 1970-1990"
+
+firststage1
+```
+
+```{r}
+#| echo: false
+#| label: problem82
+#| fig-cap: "Reduced Form 1970-1990"
+
+Reducedform1
+```
+
+\newpage
+# Problem 9
+\noindent 9.# Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
+
+
+```{r}
+#| echo: false
+#| label: problem9
+#| fig-cap: "Regression of Log Sales on Log Prices: 1990-2015"
+
+ols2
+```
+
+```{r}
+#| echo: false
+#| label: problem91
+#| fig-cap: "IV of Log Sales on Log Prices: 1990-2015"
+
+iv2
+```
+
+
+```{r}
+#| echo: false
+#| label: problem92
+#| fig-cap: "First Stage 1990-2015"
+
+firststage2
+```
+
+```{r}
+#| echo: false
+#| label: problem93
+#| fig-cap: "Reduced Form 1990-2015"
+
+Reducedform2
+```
