@@ -56,11 +56,33 @@ graph2
 
 \newpage
 # Problem 3
+\noindent 3. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
 ```{r}
 #| echo: false
-#| label: bar
-#| fig-cap: "Proportion of States with a Tax Change per Year"
+#| label: problem3
+#| fig-cap: "Average Packs Sold per Capita for Top 5 States with Highest Price Increases"
 
-graph1
+graph3
 ```
 
+\newpage
+# Problem 4
+\noindent 4. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+```{r}
+#| echo: false
+#| label: problem4
+#| fig-cap: "Average Packs Sold per Capita for Bottom 5 States with Lowest Price Increases"
+
+graph4
+```
+
+\newpage
+# Problem 5
+\noindent 5. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+```{r}
+#| echo: false
+#| label: problem5
+#| fig-cap: "Comparison of Sales Trends between High and Low Price Increase States"
+
+compareincreases
+```

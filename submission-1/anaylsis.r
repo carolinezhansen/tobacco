@@ -8,17 +8,21 @@ source("data/output/TaxBurden_Data.rds")
 final.data$Year
 # problem 1
 # Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
-calculate_tax_change <- function(final.data) {
-  tax_change <- c(NA, diff(final.data$tax_state)) # nolint
-  return(final.data)
-}
-tax_change
-final.data1 <- calculate_tax_change(final.data)
-filtered.data1 <- final.data1[final.data1$Year >= 1970 & final.data1$Year <= 1985,]# nolint1
+
+length(filtered.data1$tax_change)
+length(Year)
+
+filtered.data1 <- final.data[final.data$Year >= 1970 & final.data$Year <= 1985,]# nolint1
 filtered.data1
+calculate_tax_change <- function(filtered.data1) {
+  tax_change <- c(NA, diff(filtered.data1$tax_state)) # nolint
+  return(filtered.data1)
+}
+filtered.data1 <- calculate_tax_change(filtered.data1)
 # Aggregate tax changes by year
 tax_changes_by_year <- aggregate(tax_change ~ Year, data = filtered.data1, FUN = mean, na.rm = TRUE)
-
+length(tax_change)
+length(filtered.data1$Year)
 # Create a bar plot of tax changes over years
 graph1 <- barplot(tax_changes_by_year$tax_change, 
         names.arg = tax_changes_by_year$Year, 
@@ -31,7 +35,8 @@ graph1 <- barplot(tax_changes_by_year$tax_change,
 # problem 2
 
 # Plot on a single graph the average tax (in 2012 dollars) on cigarettes and the average price of a pack of cigarettes from 1970 to 2018.
-total_tax_cpi_2012 <- final.data$tax_dollar*(cpi.2012/final.data$index)
+total_tax_cpi_2012 <- final.data$tax_dollar*(cpi.2012/index)
+
 price_cpi_2012 <- final.data$cost_per_pack*(cpi.2012/final.data$index)
 average_tax1 <- final.data %>%
   group_by(Year) %>%
@@ -44,7 +49,7 @@ average_price1 <- final.data %>%
 average_price
 
 # Merge the two datasets based on the "Year" column
-merged_data <- merge(average_tax, average_price, by = "Year", all = TRUE)
+merged_data <- merge(average_tax1, average_price1, by = "Year", all = TRUE)
 
 graph2 <- ggplot(merged_data, aes(x = Year)) +
   geom_line(aes(y = avg_tax, color = "Average Tax"), size = 1.5) +
@@ -65,7 +70,6 @@ price_increase <- aggregate(price_change ~ state, final.data, FUN = function(x) 
 top_5_states <- head(price_increase[order(-price_increase$price), ], 5)$state
 
 
-
 filtered_data <- final.data[final.data$state %in% top_5_states, ]
 
 graph3 <- ggplot(filtered_data, aes(x = Year, y = sales_per_capita, group = state, color = state)) +
@@ -82,7 +86,7 @@ bottom_5_states <- head(price_increase[order(price_increase$price), ], 5)$state
 
 filtered_data2 <- final.data[final.data$state %in% bottom_5_states, ]
 
-ggplot(filtered_data2, aes(x = Year, y = sales_per_capita, group = state, color = state)) +
+graph4 <- ggplot(filtered_data2, aes(x = Year, y = sales_per_capita, group = state, color = state)) +
   geom_line() +
   labs(x = "Year", y = "Average Packs Sold per Capita", 
        title = "Average Packs Sold per Capita for Top 5 States with lowest Price Increases",
@@ -108,45 +112,40 @@ filtered_data3 <- final.data[final.data$Year >= 1970 & final.data$Year <= 1990, 
 final.data <- final.data %>% mutate(ln_sales=log(sales_per_capita),
                                 ln_price_cpi=log(price_cpi),
                                 ln_price=log(cost_per_pack),
-                                tax_cpi=tax_state*(218/index),
-                                total_tax_cpi=tax_dollar*(218/index),
+                                tax_cpi=tax_state*(218/final.data$index),
+                                total_tax_cpi=tax_dollar*(218/inal.data$index),
                                 ln_total_tax=log(total_tax_cpi),                             
                                 ln_state_tax=log(tax_cpi))
 
-model <- lm(log(sales_per_capita) ~ log(cost_per_pack), data = filtered_data3)
 
-reg1 <- summary(model)
 
-print(reg1)
+ols1 <- feols(ln_sales~ln_price2021, data=final.data %>% filter(Year<1991))
+
+
+
+
+
+
 
 # the p-value is less than zero which means that there is a statistically significant relationship between sales and cost per pack. The coeficcient for cost per pack is -0.171 which means that there in an inelastic demand. So when 1% increase in cigarette price leds to a less than 1% decrease in sales per capita. 
 
 # problem 7
 # Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
 
-iv_model <-feols(log(sales_per_capita) ~ log(cost_per_pack) | log(tax_dollar), data = filtered_data3)
-
-summary(iv_model)
+iv1 = feols(ln_sales ~ 2 | ln_price_2012 ~ ln_tax_2012, data=cig.data %>% filter(Year<1991))
 
 # problem 8
 # Show the first stage and reduced-form results from the instrument.
-summary(iv_model, diagnostics = TRUE)
 
+firststage1 <- feols(ln_price2012~lin_tax_2012, data=final.data, %>% filter(Year<1991))
 
+Reducedform1 <- feols(ln_price2012~lin_tax_2012, data=final.data, %>% filter(Year<1991))
 # problem 9 
 # Repeat questions 1-3 focusing on the period from 1991 to 2015.
 
-filtered_data4 <- final.data[final.data$Year >= 1991 & final.data$Year <= 2015, ]
+Ols2 <- feols(ln_sales~ln_price2021, data=final.data %>% filter(Year>=1991 & Year<2015))
 
-model2 <- lm(log(sales_per_capita) ~ log(cost_per_pack), data = filtered_data4)
-
-reg2 <- summary(model2)
-
-print(reg2)
-
-iv_model2 <- ivreg(log(sales_per_capita) ~ log(cost_per_pack) | log(tax_dollar), data = filtered_data4)
-
-summary(iv_model2)
+firststage2 <- feols(ln_price2012~lin_tax_2012, data=final.data, %>% filter(Year>=1991 & Year<2015))
 
 # problem 10
 # Compare your elasticity estimates from 1970-1990 versus those from 1991-2015. Are they different? If so, why?
