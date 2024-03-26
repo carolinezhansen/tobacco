@@ -1,0 +1,205 @@
+---
+title: "Submission3-HW3"
+subtitle: "Research Methods, Spring 2024"
+author: "Caroline Hansen"
+format:
+  pdf:
+    output-file: "carolinehw3-3"
+    output-ext:  "pdf"
+    header-includes:
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+---
+
+https://github.com/carolinezhansen/tobacco/tree/main
+
+```{r}
+#| include: false
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra)
+```
+
+```{r}
+#| include: false
+#| eval: true
+
+load("Hwk3_workspace.Rdata")
+```
+
+
+
+# Answers for Homework 3: Submission 1
+\newpage
+
+# Problem 1 
+\noindent 1. Present a bar graph showing the proportion of states with a change in their cigarette tax in each year from 1970 to 1985.
+```{r} 
+#| echo: false
+#| label: bar
+#| fig-cap: "Proportion of States with a Tax Change per Year"
+
+graph1
+```
+\newpage
+# Problem 2 
+\noindent 2. Plot on a single graph the average tax (in 2012 dollars) on cigarettes and the average price of a pack of cigarettes from 1970 to 2018.
+```{r} 
+#| echo: false
+#| label: graph2
+#| fig-cap: "Average Tax and Average Price of Cigarettes from 1970 to 2018"
+
+graph2
+```
+
+\newpage
+# Problem 3
+\noindent 3. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+```{r}
+#| echo: false
+#| label: problem3
+#| fig-cap: "Average Packs Sold per Capita for Top 5 States with Highest Price Increases"
+
+graph3
+```
+
+\newpage
+# Problem 4
+\noindent 4. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+```{r}
+#| echo: false
+#| label: problem4
+#| fig-cap: "Average Packs Sold per Capita for Bottom 5 States with Lowest Price Increases"
+
+graph4
+```
+
+\newpage
+# Problem 5
+\noindent 5. Identify the 5 states with the highest increases in cigarette prices (in dollars) over the time period. Plot the average number of packs sold per capita for those states from 1970 to 2018.
+```{r}
+#| echo: false
+#| label: problem5
+#| fig-cap: "Comparison of Sales Trends between High and Low Price Increase States"
+
+compareincreases
+```
+
+\newpage
+# Problem 6
+\noindent 6.# Focusing only on the time period from 1970 to 1990, regress log sales on log prices to estimate the price elasticity of demand over that period. Interpret your results.
+```{r}
+#| echo: false
+#| label: problem6
+#| fig-cap: "Regression of Log Sales on Log Prices: 1970-1990"
+
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table, 
+             col.names=c("OLS","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE) 
+             
+```
+
+\newpage
+# Problem 7
+\noindent 7.# Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
+
+```{r}
+#| echo: false
+#| label: problem7
+#| fig-cap: "IV of Log Sales on Log Prices: 1970-1990"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table2, 
+             col.names=c("IV","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE) 
+
+```
+
+\newpage
+
+# Problem 8
+\noindent 8.# Show the first stage and reduced-form results from the instrument.
+
+
+```{r}
+#| echo: false
+#| label: problem81
+#| fig-cap: "First Stage 1970-1990"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table3, 
+             col.names=c("First Stage","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE)
+```
+
+```{r}
+#| echo: false
+#| label: problem82
+#| fig-cap: "Reduced Form 1970-1990"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table4, 
+             col.names=c("Reduced Form","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE)
+```
+
+\newpage
+# Problem 9
+\noindent 9.# Again limiting to 1970 to 1990, regress log sales on log prices using the total (federal and state) cigarette tax (in dollars) as an instrument for log prices. Interpret your results and compare your estimates to those without an instrument. Are they different? If so, why?
+
+
+```{r}
+#| echo: false
+#| label: problem9
+#| fig-cap: "Regression of Log Sales on Log Prices: 1990-2015"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table5, 
+             col.names=c("OLS","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE) 
+```
+
+```{r}
+#| echo: false
+#| label: problem91
+#| fig-cap: "IV of Log Sales on Log Prices: 1990-2015"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table6, 
+             col.names=c("IV","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE)
+             
+```
+
+
+```{r}
+#| echo: false
+#| label: problem92
+#| fig-cap: "First Stage 1990-2015"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table7, 
+             col.names=c("First Stage","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE)
+             
+```
+
+```{r}
+#| echo: false
+#| label: problem93
+#| fig-cap: "Reduced Form 1990-2015"
+
+options(knitr.kable.NA = 0)
+knitr::kable(regression_table8, 
+             col.names=c("Reduced Form","Coefficients","Standard Error"),
+             format.args=list(big.mark=","), booktabs = TRUE) 
+```
+# problem 10
+ Compare your elasticity estimates from 1970-1990 versus those from 1991-2015. Are they different? If so, why?
+
+
+The elasticity estimates are different between the years. This makes sense since there have been health campaigns against smoking that can cause the demand to go down, even though cigarettes have an addictive element. 
